@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: vatpac_tms
+  IMAGE_NAME: vatpac_bmac
   #IMAGE_TAG: ${{ github.sha }}
   IMAGE_TAG: latest
 
