@@ -34,7 +34,7 @@ RUN apk add --no-cache php8 \
     php8-gd \
     php8-exif \
     php8-pcntl \
-    php8-xmlreader \
+    php8-xmlreader
 
 RUN ln -s /usr/bin/php8 /usr/bin/php
 
