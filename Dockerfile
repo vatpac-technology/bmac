@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM php:8.1.8-alpine3.15
 
 WORKDIR /application
 
