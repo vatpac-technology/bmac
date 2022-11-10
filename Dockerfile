@@ -57,7 +57,7 @@ COPY --chown=www-data:www-data . /var/www/app
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/app/vendor/
 COPY --chown=www-data:www-data --from=frontend /app/public/js/ /var/www/app/public/js/
 COPY --chown=www-data:www-data --from=frontend /app/public/css/ /var/www/app/public/css/
-COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/app/mix-manifest.json
+COPY --chown=www-data:www-data --from=frontend /app/public/mix-manifest.json /var/www/app/public/mix-manifest.json
 
 # Copy docker files
 RUN rm /usr/local/etc/php-fpm.d/zz-docker.conf
