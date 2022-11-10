@@ -18,23 +18,21 @@ RUN composer install \
 #
 # Frontend
 #
-
 FROM node:14-alpine as frontend
 
 RUN mkdir -p /app/public
 
 COPY package.json package-lock.json webpack.mix.js /app/
-# Copy your JavaScript source files
 COPY resources/ /app/resources/
 
 WORKDIR /app
 RUN npm ci && npm run prod
 
-FROM php:8.1-fpm-alpine
-
 #
 # Application
 #
+FROM php:8.1-fpm-alpine
+
 RUN apk update && apk add --no-cache \
     supervisor \
     curl \
@@ -55,10 +53,10 @@ RUN pecl install redis && docker-php-ext-enable redis.so
 
 WORKDIR /var/www/app
 COPY --chown=www-data:www-data . /var/www/app
-COPY --chown=www-data:www-data --from=vendor /app/vendor /var/www/app/vendor
+COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/app/vendor/
 COPY --chown=www-data:www-data --from=frontend /app/public/js/ /var/www/app/public/js/
 COPY --chown=www-data:www-data --from=frontend /app/public/css/ /var/www/app/public/css/
-COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/app/mix-manifest.j
+COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/app/mix-manifest.json
 
 RUN rm /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY docker_files/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf

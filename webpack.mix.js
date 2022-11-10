@@ -15,6 +15,8 @@ require('laravel-mix-purgecss');
 
 require('dotenv').config();
 
+mix.setPublicPath(path.resolve('./'))
+
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/alpine.js', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
