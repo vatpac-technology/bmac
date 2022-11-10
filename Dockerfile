@@ -51,6 +51,7 @@ RUN docker-php-ext-configure gd --with-jpeg --with-freetype
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl dom bcmath gd
 RUN pecl install redis && docker-php-ext-enable redis.so
 
+# Copy application files
 WORKDIR /var/www/app
 COPY --chown=www-data:www-data . /var/www/app
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/app/vendor/
@@ -58,11 +59,16 @@ COPY --chown=www-data:www-data --from=frontend /app/public/js/ /var/www/app/publ
 COPY --chown=www-data:www-data --from=frontend /app/public/css/ /var/www/app/public/css/
 COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/app/mix-manifest.json
 
+# Copy docker files
 RUN rm /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY docker_files/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker_files/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker_files/php.ini /etc/php8/conf.d/50-setting.ini
 COPY docker_files/nginx.conf /etc/nginx/nginx.conf
+
+# Add Cronjob if required
+ADD docker_files/crontab.txt /crontab.txt
+RUN /usr/bin/crontab /crontab.txt
 
 EXPOSE 80
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
